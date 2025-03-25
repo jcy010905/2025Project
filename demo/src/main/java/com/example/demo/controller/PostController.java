@@ -6,6 +6,8 @@ import com.example.demo.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.util.List;
 
@@ -17,9 +19,11 @@ public class PostController {
     private final PostService postService;
 
     // 게시글 등록
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto requestDto) {
-        PostResponseDto response = postService.createPost(requestDto);
+    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto requestDto,
+                                                    @AuthenticationPrincipal String username) {
+        PostResponseDto response = postService.createPost(requestDto, username);
         return ResponseEntity.ok(response);
     }
 
@@ -36,15 +40,20 @@ public class PostController {
     }
 
     // 게시글 수정
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/{id}")
-    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
-        return postService.updatePost(id, requestDto);
+    public PostResponseDto updatePost(@PathVariable Long id, 
+                                        @RequestBody PostRequestDto requestDto,
+                                        @AuthenticationPrincipal String username) {
+        return postService.updatePost(id, requestDto, username);
     }
 
     // 게시글 삭제
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id) {
-        postService.deletePost(id);
+    public void deletePost(@PathVariable Long id,
+                        @AuthenticationPrincipal String username) {
+        postService.deletePost(id, username);
     }
 
 }
