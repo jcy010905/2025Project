@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Getter
 @Setter
@@ -24,6 +26,7 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User author;
 
     private LocalDateTime createdAt;
