@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.LoginResponse;
 import com.example.demo.dto.UserLoginRequestDto;
 import com.example.demo.dto.UserSignUpRequestDto;
 import com.example.demo.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     private final UserService userService;
@@ -23,12 +25,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLoginRequestDto requestDto) {
+    public ResponseEntity<?> login(@RequestBody UserLoginRequestDto requestDto) {
         String token = userService.login(requestDto);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
 
-        return ResponseEntity.ok().headers(headers).body("로그인 성공");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+
+        return ResponseEntity.ok()
+                            .headers(headers)
+                            .body(new LoginResponse("로그인 성공", token));
     }
 
     @GetMapping("/me")
