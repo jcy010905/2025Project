@@ -1,19 +1,40 @@
 import { useState } from "react";
 import "../css/Login.css";
+import { useNavigate } from "react-router-dom";
+import RouterPath from "../router/RouterPath";
+import { SignupApi } from "../api/SignupApi";
 
 export default function Signup() {
+    const navigate = useNavigate();
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSingup = () => {
-        // 로그인 페이지로 이동
-    };
+    const handleSingup = async (e) => {
+            e.preventDefault();
+            if (username === ''){
+                alert("아이디를 입력하세요");
+            }
+            else if (password === '') {
+                alert("비밀번호를 입력하세요");
+            }
+            else{
+                try {
+                    await SignupApi(username, password);
+                    navigate(RouterPath.slash);
+                    } catch (error) {
+                    // console.error('회원가입 실패:', error);
+                    }
+                navigate(RouterPath.slash);
+                alert("회원가입 성공!");
+            }
+        };
 
     return (
         <div className="wrapper">
             <div className="login-wrapper">
                 <h2>회원가입</h2>
-                <form id="login-form" onSubmit={handleSingup}>
+                <form id="signup-form" onSubmit={handleSingup}>
                     <input
                         type="text"
                         placeholder="아이디"
@@ -26,7 +47,10 @@ export default function Signup() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <input type="submit" value="로그인" />
+                    <input type="submit" value="회원가입" />
+                    <button className="signup-button" onClick={() => navigate(RouterPath.slash)}>
+                            돌아가기
+                    </button>
                 </form>
             </div>
         </div>

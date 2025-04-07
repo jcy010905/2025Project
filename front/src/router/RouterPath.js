@@ -1,7 +1,6 @@
 const RouterPath = {
     slash: '/',
-    login: '/login',
-    signup: '/signup'
+    signup: '/signup',
 };
 
 export default RouterPath;

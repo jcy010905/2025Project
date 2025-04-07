@@ -4,7 +4,7 @@ import { loginApi } from "../api/LoginApi";
 import { useNavigate } from "react-router-dom";
 import RouterPath from "../router/RouterPath";
 
-export default function Login() {
+export default function Login({ setToken }) {
     const navigate = useNavigate();
 
     const [username, setUsername] = useState('');
@@ -12,10 +12,24 @@ export default function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        try {
-        await loginApi(username, password);
-        } catch (error) {
-        // console.error('로그인 실패:', error);
+
+        if (username === '') {
+            alert("아이디를 입력하세요");
+        } else if (password === '') {
+            alert("비밀번호를 입력하세요");
+        } else {
+            try {
+                await loginApi(username, password);
+                const token = localStorage.getItem('accessToken');
+                if (token) {
+                    setToken(token); // 상태 갱신 → Router 재렌더링됨
+                    navigate(RouterPath.slash);
+                } else {
+                    alert("아이디 또는 비밀번호가 틀렸습니다");
+                }
+            } catch (error) {
+                alert("아이디 또는 비밀번호가 틀렸습니다");
+            }
         }
     };
 
@@ -37,8 +51,12 @@ export default function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <input type="submit" value="로그인" />
-                    <button className="signup-button" onClick={() => navigate(RouterPath.signup)}>
-                            회원가입
+                    <button
+                        type="button"
+                        className="signup-button"
+                        onClick={() => navigate(RouterPath.signup)}
+                    >
+                        회원가입
                     </button>
                 </form>
             </div>

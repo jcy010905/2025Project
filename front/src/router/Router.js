@@ -2,18 +2,19 @@ import { Route, Routes } from 'react-router-dom';
 import RouterPath from "./RouterPath";
 import Signup from "../pages/Signup";
 import Login from '../pages/Login';
+import PostList from '../pages/PostList';
 
-function Router() {
+function Router({ token, setToken }) {
     return (
         <Routes>
-            <Route
-                path={RouterPath.slash}
-                element={<Login />}
-            />
-            <Route
-                path={RouterPath.signup}
-                element={<Signup />}
-            />
+            {token ? (
+                <Route path={RouterPath.slash} element={<PostList setToken={setToken} />} />
+            ) : (
+                <>
+                    <Route path={RouterPath.slash} element={<Login setToken={setToken} />} />
+                    <Route path={RouterPath.signup} element={<Signup />} />
+                </>
+            )}
         </Routes>
     );
 }
