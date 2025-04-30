@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
-@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     private final UserService userService;
@@ -38,6 +37,6 @@ public class UserController {
 
     @GetMapping("/me")
     public String getMyUsername(@AuthenticationPrincipal String username) {
-        return "현재 로그인한 사용자: " + username;
+        return username;
     }
 }

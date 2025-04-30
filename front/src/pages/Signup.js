@@ -48,10 +48,10 @@ export default function Signup() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <input type="submit" value="회원가입" />
-                    <button className="signup-button" onClick={() => navigate(RouterPath.slash)}>
+                </form>
+                <button className="signup-button" onClick={() => navigate(RouterPath.slash)}>
                             돌아가기
                     </button>
-                </form>
             </div>
         </div>
     );

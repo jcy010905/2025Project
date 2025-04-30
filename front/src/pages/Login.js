@@ -51,14 +51,14 @@ export default function Login({ setToken }) {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <input type="submit" value="로그인" />
-                    <button
+                </form>
+                <button
                         type="button"
                         className="signup-button"
                         onClick={() => navigate(RouterPath.signup)}
                     >
-                        회원가입
-                    </button>
-                </form>
+                    회원가입
+                </button>
             </div>
         </div>
     );
